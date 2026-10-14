@@ -1,0 +1,6 @@
+*.out
+*.o
+*.exe
+Game
+obj/*
+bestScore.txt
