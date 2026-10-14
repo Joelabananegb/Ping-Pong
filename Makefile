@@ -14,7 +14,7 @@ ASAN = ASAN_OPTIONS=detect_leaks=0
 TARGET = Game
 
 # Fichiers sources
-SRC = $(SRC_DIR)/main.c $(SRC_DIR)/game.c $(SRC_DIR)/player.c $(SRC_DIR)/projectile.c $(SRC_DIR)/ennemie.c $(SRC_DIR)/wall.c
+SRC = $(SRC_DIR)/main.c $(SRC_DIR)/game.c
 
 # Objets générés automatiquement
 OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
