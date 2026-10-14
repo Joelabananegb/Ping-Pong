@@ -4,3 +4,4 @@
 Game
 obj/*
 bestScore.txt
+.gitignore
