@@ -51,7 +51,7 @@ void Game(SDL_Renderer *render, SDL_Window *window)
   SDL_GetWindowSize(window, &width, &height);
 
   SDL_Rect rect_left  = {RACKET_PADDING + 10, (height/ 2) - BALL_SIZE*2, RACKET_PADDING, BALL_SIZE*3};
-  SDL_Rect rect_right = {SCREEN_WIDTH - 20, (height/ 2) - BALL_SIZE*2, RACKET_PADDING, BALL_SIZE*3};
+  SDL_Rect rect_right = {SCREEN_WIDTH - 30, (height/ 2) - BALL_SIZE*2, RACKET_PADDING, BALL_SIZE*3};
   SDL_Rect rect_ball  = {(width - BALL_SIZE) / 2, (height- BALL_SIZE) / 2, BALL_SIZE, BALL_SIZE};
   SDL_Rect rect_mid   = {(width-5)/2, 0, 5, LINE_HEIGHT};
 
@@ -71,7 +71,7 @@ void Game(SDL_Renderer *render, SDL_Window *window)
               rect_left.w  = RACKET_PADDING;
               rect_left.h  = BALL_SIZE*3;
 
-              rect_right.x  = width - 20;
+              rect_right.x  = width - 30;
               rect_right.y  = (height/ 2) - BALL_SIZE*2;
               rect_right.w  = RACKET_PADDING;
               rect_right.h  = BALL_SIZE*3;
