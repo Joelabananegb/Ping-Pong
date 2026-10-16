@@ -7,7 +7,7 @@ int main()
     return 1;
   }
 
-  SDL_Window *window = SDL_CreateWindow("Pong game",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
+  SDL_Window *window = SDL_CreateWindow("Pong game",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE);
 
   if (window==NULL){
     Log(SDL_GetError());
