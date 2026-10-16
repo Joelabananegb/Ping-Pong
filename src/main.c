@@ -1,4 +1,5 @@
 #include "game.h"
+#include <stdbool.h>
 
 int main()
 {
@@ -20,7 +21,7 @@ int main()
     return 0;
   }
 
-  Game(render);
+  Game(render,window);
 
   SDL_DestroyRenderer(render);
   SDL_DestroyWindow(window);
