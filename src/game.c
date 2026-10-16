@@ -35,14 +35,14 @@ void Draw(SDL_Renderer *render,SDL_Rect rect_left,SDL_Rect rect_right,SDL_Rect r
 }
 void MoveBall(double dt,SDL_Rect rect_ball)
 {
-  int new_pos_x = SPEED * dt;
-  if (rect_ball.x + new_pos_x <= 0 || rect_ball.x + new_pos_x >= SCREEN_HEIGHT){
-    rect_ball.x += -(SPEED *dt);
+  int new_pos_x = rect_ball.w + (SPEED * dt);
+
+  printf("%d\n",new_pos_x);
+  if (rect_ball.x + new_pos_x > 0 && rect_ball.x + new_pos_x < SCREEN_HEIGHT){
+    printf("hhelo\n");
+    rect_ball.x += SPEED *dt;
   }
 
-  if (rect_ball.y + new_pos_x <= 0 || rect_ball.y + new_pos_x >= SCREEN_WIDTH){
-    rect_ball.y += -(SPEED *dt);
-  }
 }
 
 void Game(SDL_Renderer *render, SDL_Window *window)
@@ -59,7 +59,6 @@ void Game(SDL_Renderer *render, SDL_Window *window)
   int running = 1;
   const Uint8 *keystate = SDL_GetKeyboardState(NULL);
   while(running){
-    printf("%d, %d\n", width, height);
     SDL_Event event;
     while(SDL_PollEvent(&event)){
       if (event.type == SDL_WINDOWEVENT &&
@@ -113,7 +112,7 @@ void Game(SDL_Renderer *render, SDL_Window *window)
     SDL_SetRenderDrawColor(render, 19,19,24,255);
     SDL_RenderClear(render);
     Draw(render, rect_left, rect_right, rect_ball, rect_mid, height);
-    MoveBall(0.2, rect_ball);
+    MoveBall(dt, rect_ball);
     SDL_RenderPresent(render);
   }
 }
