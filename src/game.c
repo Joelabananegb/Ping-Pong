@@ -10,7 +10,7 @@
  ****************************************/
 
 SDL_Rect rect_left  = {RACKET_PADDING + 10, (SCREEN_HEIGHT / 2) - BALL_SIZE*2, RACKET_PADDING, BALL_SIZE*3};
-SDL_Rect rect_right = {RACKET_PADDING + 10, (SCREEN_HEIGHT / 2) - BALL_SIZE*2, RACKET_PADDING, BALL_SIZE*3};
+SDL_Rect rect_right = {SCREEN_WIDTH - 20, (SCREEN_HEIGHT / 2) - BALL_SIZE*2, RACKET_PADDING, BALL_SIZE*3};
 SDL_Rect rect_ball  = {(SCREEN_WIDTH - BALL_SIZE) / 2, (SCREEN_HEIGHT - BALL_SIZE) / 2, BALL_SIZE, BALL_SIZE};
 SDL_Rect rect_mid   = {(SCREEN_WIDTH-5)/2, 0, 5, LINE_HEIGHT};
 
@@ -70,11 +70,11 @@ void Game(SDL_Renderer *render)
       rect_left.y += SPEED*dt;
     }
 
-    if (keystate[SDL_SCANCODE_Z] && rect_right.y > 0){
+    if (keystate[SDL_SCANCODE_E] && rect_right.y > 0){
       rect_right.y -= SPEED*dt;
     }
 
-    if (keystate[SDL_SCANCODE_S] && rect_right.y < SCREEN_WIDTH - RACKET_PADDING){
+    if (keystate[SDL_SCANCODE_D] && rect_right.y < SCREEN_HEIGHT - RACKET_PADDING){
       rect_right.y += SPEED*dt;
     }
 
