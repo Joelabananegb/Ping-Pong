@@ -9,125 +9,153 @@
  *                                      *
  ****************************************/
 
-int dx = 1;
-int dy = -1;
+
+int running = 1;
+
+GameStruct *Init(SDL_Window *window, SDL_Renderer *render)
+{
+  GameStruct *game = malloc(sizeof(GameStruct));
+  game->left    = {RACKET_PADDING + 10, (SCREEN_HEIGHT/ 2) - BALL_SIZE*2, RACKET_PADDING, BALL_SIZE*6};
+  game->right   = {SCREEN_WIDTH - 30, (SCREEN_HEIGHT/ 2) - BALL_SIZE*2, RACKET_PADDING, BALL_SIZE*6};
+  game->ball    = {(SCREEN_WIDTH - BALL_SIZE) / 2, (SCREEN_HEIGHT- BALL_SIZE) / 2, BALL_SIZE, BALL_SIZE};
+  game->dots    = {(SCREEN_WIDTH - 5)/2, 0, 5, LINE_HEIGHT};
+  game->ball_x  = 100.0;
+  game->ball_y  = 100.0;
+
+  game->dx = 1;
+  game->dy = -1;
+
+  game->window = window;
+  game->render = render;
+  return game;
+}
+
+void Update(GameStruct *gameStruct){
+  int width, height;
+  SDL_GetWindowSize(gameStruct->window, &width, &height);
+
+  const Uint8 *keystate = SDL_GetKeyboardState(NULL);
+  SDL_Event event;
+  while(SDL_PollEvent(&event)){
+    if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+      gameStruct->w = event.window.data1;
+      gameStruct->h = event.window.data2;
+
+      gameStruct->left.x  = RACKET_PADDING + 10;
+      gameStruct->left.y  = (gameStruct->h/ 2) - BALL_SIZE*2;
+      gameStruct->left.w  = RACKET_PADDING;
+      gameStruct->left.h  = BALL_SIZE*6;
+
+      gameStruct->right.x  = gameStruct->w- 30;
+      gameStruct->right.y  = (gameStruct->h/ 2) - BALL_SIZE*2;
+      gameStruct->right.w  = RACKET_PADDING;
+      gameStruct->right.h  = BALL_SIZE*6;
+
+      gameStruct->ball.x  = (gameStruct->w- BALL_SIZE) / 2;
+      gameStruct->ball.y  = (gameStruct->h- BALL_SIZE) / 2;
+      gameStruct->ball.w  = BALL_SIZE;
+      gameStruct->ball.h  = BALL_SIZE;
+
+      gameStruct->dots.x  = (gameStruct->w - 5) / 2;
+      gameStruct->dots.y  = 0;
+      gameStruct->dots.w  = 5;
+      gameStruct->dots.h  = LINE_HEIGHT;
+    }
+
+    if (event.type == SDL_QUIT){
+      running = 0;
+    }
+  }
+
+  if (keystate[SDL_SCANCODE_UP]){
+    int rect_left_ny = rect_left.y + SPEED * deltatime;
+    if (rect_left_ny + BALL_SIZE*6 < height){
+      rect_left.y -= rect_left.y + SPEED * deltatime;
+    }
+  }
+
+  /*if (keystate[SDL_SCANCODE_DOWN] && rect_left.y < height - BALL_SIZE*3){
+    rect_left.y += SPEED * deltatime;
+  }
+
+  if (keystate[SDL_SCANCODE_E] && rect_right.y > 0){
+    rect_right.y -= SPEED * deltatime;
+  }
+
+  if (keystate[SDL_SCANCODE_D] && rect_right.y < height - BALL_SIZE*3){
+    rect_right.y += SPEED * deltatime;
+  }*/
+
+}
 
 void Log(const char *log)
 {
   SDL_Log("Erreur: %s", log);
 }
 
-void Draw(SDL_Renderer *render,SDL_Rect rect_left,SDL_Rect rect_right,SDL_Rect rect_ball,SDL_Rect rect_mid,int h)
+/*void Draw(SDL_Renderer *render, int height)
 {
+  int lines = ((height / 100)*(height/ 100))+2;
+
   SDL_SetRenderDrawColor(render, 255, 255, 255, 255);
 
   SDL_RenderFillRect(render, &rect_ball);
   SDL_RenderFillRect(render, &rect_left);
   SDL_RenderFillRect(render, &rect_right);
 
-  int lines = ((h / 100)*(h/ 100))+2;
 
-  for (int i =0; i<= lines; i++) {
+  for (int i = 0; i <= lines; i++) {
     if (i%2 == 0){
       rect_mid.y = i*LINE_HEIGHT;
       SDL_RenderFillRect(render, &rect_mid);
     }
   }
-
 }
 
-void MoveBall(double deltatime,SDL_Rect *rect_ball, int w, int h)
+void MoveBall(double deltatime, int width, int height)
 {
-  double new_pos_x = dx*SPEED*deltatime + rect_ball->x;
-  double new_pos_y = dy*SPEED*deltatime + rect_ball->y;
-  printf("new_pos_x = %d\n",(int)new_pos_x);
-  printf("new_pos_xy= %d\n",(int)new_pos_y);
+    ball_x += dx * SPEED * deltatime;
+    ball_y += dy * SPEED * deltatime;
 
-  if (new_pos_x > 0 && new_pos_x < SCREEN_HEIGHT){
-    dx = -dx;
-  }else{
-    rect_ball->x = (int)new_pos_x;
-  }
+    if (ball_x < 0) {
+        ball_x = 0;
+        dx = -dx;
+    } else if (ball_x > width - rect_ball->w) {
+        ball_x = width - rect_ball->w;
+        dx = -dx;
+    }
 
-  if (new_pos_y > 0 && new_pos_y < SCREEN_HEIGHT){
-    dy = -dy;
-  }else{
-    rect_ball->y = (int)new_pos_y;
-  }
-}
+    if (ball_y < 0) {
+        ball_y = 0;
+        dy = -dy;
+
+    } else if (ball_y > height - rect_ball->h) {
+        ball_y = height - rect_ball->h;
+        dy = -dy;
+    }
+
+    rect_ball->x = (int)lround(ball_x);
+    rect_ball->y = (int)lround(ball_y);
+}*/
 
 void Game(SDL_Renderer *render, SDL_Window *window)
 {
-  int width, height;
-  SDL_GetWindowSize(window, &width, &height);
 
-  SDL_Rect rect_left  = {RACKET_PADDING + 10, (height/ 2) - BALL_SIZE*2, RACKET_PADDING, BALL_SIZE*3};
-  SDL_Rect rect_right = {SCREEN_WIDTH - 30, (height/ 2) - BALL_SIZE*2, RACKET_PADDING, BALL_SIZE*3};
-  SDL_Rect rect_ball  = {(width - BALL_SIZE) / 2, (height- BALL_SIZE) / 2, BALL_SIZE, BALL_SIZE};
-  SDL_Rect rect_mid   = {(width-5)/2, 0, 5, LINE_HEIGHT};
+  GameStruct *gameStruct = Init(render, window);
 
-  int running = 1;
-  const Uint8 *keystate = SDL_GetKeyboardState(NULL);
   Uint64 now = SDL_GetPerformanceCounter();
   Uint64 last = 0;
   double deltatime = 0;
+
   while(running){
     last = now;
     now = SDL_GetPerformanceCounter();
     deltatime = (double)(now-last)*1000/(double)SDL_GetPerformanceFrequency();
-    SDL_Event event;
-    while(SDL_PollEvent(&event)){
-      if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-              width = event.window.data1;
-              height = event.window.data2;
 
-              rect_left.x  = RACKET_PADDING + 10;
-              rect_left.y  = (height/ 2) - BALL_SIZE*2;
-              rect_left.w  = RACKET_PADDING;
-              rect_left.h  = BALL_SIZE*3;
-
-              rect_right.x  = width - 30;
-              rect_right.y  = (height/ 2) - BALL_SIZE*2;
-              rect_right.w  = RACKET_PADDING;
-              rect_right.h  = BALL_SIZE*3;
-
-              rect_ball.x  = (width - BALL_SIZE) / 2;
-              rect_ball.y  = (height- BALL_SIZE) / 2;
-              rect_ball.w  = BALL_SIZE;
-              rect_ball.h  = BALL_SIZE;             
-
-              rect_mid.x  = (width - 5) / 2;
-              rect_mid.y  = 0;
-              rect_mid.w  = 5;
-              rect_mid.h  = LINE_HEIGHT;
-
-      }
-
-      if (event.type == SDL_QUIT){
-        running = 0;
-      }
-    }
-
-    if (keystate[SDL_SCANCODE_UP] && rect_left.y > 0){
-      rect_left.y -= SPEED *deltatime;
-    }
-
-    if (keystate[SDL_SCANCODE_DOWN] && rect_left.y < height - BALL_SIZE*3){
-      rect_left.y += SPEED * deltatime;
-    }
-
-    if (keystate[SDL_SCANCODE_E] && rect_right.y > 0){
-      rect_right.y -= SPEED * deltatime;
-    }
-
-    if (keystate[SDL_SCANCODE_D] && rect_right.y < height - BALL_SIZE*3){
-      rect_right.y += SPEED * deltatime;
-    }
-
-    SDL_SetRenderDrawColor(render, 19,19,24,255);
+    SDL_SetRenderDrawColor(render, 19, 19, 24, 255);
     SDL_RenderClear(render);
-    Draw(render, rect_left, rect_right, rect_ball, rect_mid, height);
-    MoveBall(deltatime, &rect_ball, width,height);
+    Draw(gameStruct);
+    MoveBall(deltatime);
     SDL_RenderPresent(render);
   }
 }

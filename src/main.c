@@ -1,5 +1,4 @@
 #include "game.h"
-#include <stdbool.h>
 
 int main()
 {
