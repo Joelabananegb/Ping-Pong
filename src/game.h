@@ -23,6 +23,8 @@ typedef struct GameStruct{
   int             h;
   int             right_dy;
   int             left_dy;
+  int             line_length;
+
   double          deltatime;
   double          ball_x;
   double          ball_y;
@@ -41,7 +43,7 @@ void Log(const char *);
 GameStruct*Init(SDL_Window *, SDL_Renderer *);
 void Update(GameStruct *);
 void Draw(GameStruct *);
-void MoveBall(GameStruct*);
+void MoveBall(GameStruct *);
 void Game(SDL_Renderer *, SDL_Window *);
 
 #endif // !GAME_H
