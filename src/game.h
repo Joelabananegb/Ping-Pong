@@ -28,6 +28,7 @@ typedef struct GameStruct{
   double          deltatime;
   double          ball_x;
   double          ball_y;
+  double          left_y;
 
 
   SDL_Rect        left;

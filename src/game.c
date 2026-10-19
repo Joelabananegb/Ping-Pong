@@ -27,6 +27,7 @@ GameStruct *Init(SDL_Window *window, SDL_Renderer *render)
 
   game->ball_x       = 100.0;
   game->ball_y       = 100.0;
+  game->left_y       = 0.0;
 
   game->dx           = 1;
   game->dy           = -1;
@@ -78,18 +79,18 @@ void Update(GameStruct *gameStruct)
   }
 
   if (keystate[SDL_SCANCODE_UP]){
-    int rect_left_ny = gameStruct->left.y + SPEED * gameStruct->deltatime;
-
-    if (rect_left_ny + BALL_SIZE*6 < height){
-      gameStruct->left.y -= gameStruct->left.y + SPEED * gameStruct->deltatime;
+    double left_ny = gameStruct->left_y + (SPEED) * gameStruct->deltatime;
+    
+    if (left_ny + BALL_SIZE*6 < gameStruct->h){
+      gameStruct->left.y = (int)lround(gameStruct->left_y);
     }
   }
 
-  /*if (keystate[SDL_SCANCODE_DOWN] && rect_left.y < height - BALL_SIZE*3){
-    rect_left.y += SPEED * deltatime;
+  if (keystate[SDL_SCANCODE_DOWN] && gameStruct->left.y < gameStruct->h - BALL_SIZE*6){
+    gameStruct->left.y += gameStruct->left_y + SPEED * gameStruct->deltatime;
   }
 
-  if (keystate[SDL_SCANCODE_E] && rect_right.y > 0){
+  /*if (keystate[SDL_SCANCODE_E] && rect_right.y > 0){
     rect_right.y -= SPEED * deltatime;
   }
 
