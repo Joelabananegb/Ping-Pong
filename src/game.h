@@ -24,6 +24,8 @@ typedef struct GameStruct{
   int             right_dy;
   int             left_dy;
   int             line_length;
+  int             left_score;
+  int             right_score;
 
   double          deltatime;
   double          ball_x;

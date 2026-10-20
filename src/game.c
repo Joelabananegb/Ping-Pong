@@ -1,4 +1,5 @@
 #include "game.h"
+
 /****************************************
  *                                      *
  *    TODO Score show                   *
@@ -9,6 +10,10 @@
  *                                      *
  ****************************************/
 
+void Log(const char *log)
+{
+  SDL_Log("Erreur: %s", log);
+}
 
 int running = 1;
 
@@ -48,29 +53,29 @@ void Update(GameStruct *gameStruct)
   const Uint8 *keystate = SDL_GetKeyboardState(NULL);
   SDL_Event event;
   while(SDL_PollEvent(&event)){
-    if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-      gameStruct->w = event.window.data1;
-      gameStruct->h = event.window.data2;
+    if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED){
+      gameStruct->w        = event.window.data1;
+      gameStruct->h        = event.window.data2;
 
-      gameStruct->left.x  = RACKET_PADDING + 10;
-      gameStruct->left.y  = (gameStruct->h/ 2) - BALL_SIZE*2;
-      gameStruct->left.w  = RACKET_PADDING;
-      gameStruct->left.h  = BALL_SIZE*6;
+      gameStruct->left.x   = RACKET_PADDING + 10;
+      gameStruct->left.y   = (gameStruct->h/ 2) - BALL_SIZE*2;
+      gameStruct->left.w   = RACKET_PADDING;
+      gameStruct->left.h   = BALL_SIZE*6;
 
       gameStruct->right.x  = gameStruct->w- 30;
       gameStruct->right.y  = (gameStruct->h/ 2) - BALL_SIZE*2;
       gameStruct->right.w  = RACKET_PADDING;
       gameStruct->right.h  = BALL_SIZE*6;
 
-      gameStruct->ball.x  = (gameStruct->w- BALL_SIZE) / 2;
-      gameStruct->ball.y  = (gameStruct->h- BALL_SIZE) / 2;
-      gameStruct->ball.w  = BALL_SIZE;
-      gameStruct->ball.h  = BALL_SIZE;
+      gameStruct->ball.x   = (gameStruct->w- BALL_SIZE) / 2;
+      gameStruct->ball.y   = (gameStruct->h- BALL_SIZE) / 2;
+      gameStruct->ball.w   = BALL_SIZE;
+      gameStruct->ball.h   = BALL_SIZE;
 
-      gameStruct->dots.x  = (gameStruct->w - 5) / 2;
-      gameStruct->dots.y  = 0;
-      gameStruct->dots.w  = 5;
-      gameStruct->dots.h  = LINE_HEIGHT;
+      gameStruct->dots.x   = (gameStruct->w - 5) / 2;
+      gameStruct->dots.y   = 0;
+      gameStruct->dots.w   = 5;
+      gameStruct->dots.h   = LINE_HEIGHT;
     }
 
     if (event.type == SDL_QUIT){
@@ -80,7 +85,7 @@ void Update(GameStruct *gameStruct)
 
   if (keystate[SDL_SCANCODE_UP]){
     double left_ny = gameStruct->left_y + (SPEED) * gameStruct->deltatime;
-    
+
     if (left_ny + BALL_SIZE*6 < gameStruct->h){
       gameStruct->left.y = (int)lround(gameStruct->left_y);
     }
@@ -97,13 +102,8 @@ void Update(GameStruct *gameStruct)
   if (keystate[SDL_SCANCODE_D] && rect_right.y < height - BALL_SIZE*3){
     rect_right.y += SPEED * deltatime;
   }*/
-
 }
 
-void Log(const char *log)
-{
-  SDL_Log("Erreur: %s", log);
-}
 
 void Draw(GameStruct *gameStruct)
 {
@@ -114,7 +114,7 @@ void Draw(GameStruct *gameStruct)
   SDL_RenderFillRect(gameStruct->render, &gameStruct->right);
 
 
-  for (int i = 0; i <= gameStruct->line_length; i++) {
+  for (int i = 0; i <= gameStruct->line_length; i++){
     if (i%2 == 0){
       gameStruct->dots.y = i*LINE_HEIGHT;
       SDL_RenderFillRect(gameStruct->render, &gameStruct->dots);
@@ -127,21 +127,21 @@ void MoveBall(GameStruct *gameStruct)
     gameStruct->ball_x += gameStruct->dx * SPEED * gameStruct->deltatime;
     gameStruct->ball_y += gameStruct->dy * SPEED * gameStruct->deltatime;
 
-    if (gameStruct->ball_x < 0) {
+    if (gameStruct->ball_x < 0){
         gameStruct->ball_x = 0;
-        gameStruct->dx = -gameStruct->dx;
-    } else if (gameStruct->ball_x > gameStruct->w - gameStruct->ball.w) {
+        gameStruct->dx     = -gameStruct->dx;
+    }else if (gameStruct->ball_x > gameStruct->w - gameStruct->ball.w){
         gameStruct->ball_x = gameStruct->w - gameStruct->ball.w;
-        gameStruct->dx = -gameStruct->dx;
+        gameStruct->dx     = -gameStruct->dx;
     }
 
-    if (gameStruct->ball_y < 0) {
+    if (gameStruct->ball_y < 0){
         gameStruct->ball_y = 0;
-        gameStruct->dy = -gameStruct->dy;
+        gameStruct->dy     = -gameStruct->dy;
 
-    } else if (gameStruct->ball_y > gameStruct->h - gameStruct->ball.h) {
+    }else if (gameStruct->ball_y > gameStruct->h - gameStruct->ball.h){
         gameStruct->ball_y = gameStruct->h - gameStruct->ball.h;
-        gameStruct->dy = -gameStruct->dy;
+        gameStruct->dy     = -gameStruct->dy;
     }
 
     gameStruct->ball.x = (int)lround(gameStruct->ball_x);
@@ -150,23 +150,22 @@ void MoveBall(GameStruct *gameStruct)
 
 void Game(SDL_Renderer *render, SDL_Window *window)
 {
-
   GameStruct *gameStruct = Init(window, render);
-
-  Uint64 now = SDL_GetPerformanceCounter();
-  Uint64 last = 0;
+  Uint64 now             = SDL_GetPerformanceCounter();
+  Uint64 last            = 0;
 
   while(running){
-    last = now;
-    now = SDL_GetPerformanceCounter();
+    last                  = now;
+    now                   = SDL_GetPerformanceCounter();
     gameStruct->deltatime = (double)(now-last)*1000/(double)SDL_GetPerformanceFrequency();
 
     Update(gameStruct);
-
     SDL_SetRenderDrawColor(gameStruct->render, 19, 19, 24, 255);
     SDL_RenderClear(gameStruct->render);
     Draw(gameStruct);
     MoveBall(gameStruct);
     SDL_RenderPresent(gameStruct->render);
   }
+
+  free(gameStruct);
 }
