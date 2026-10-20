@@ -3,7 +3,7 @@
 /****************************************
  *                                      *
  *    TODO Score show                   *
- *    TODO Ball movement collision wall *
+ *    TODO racket movement              *
  *    TODO Ball and racket collision    *
  *    TODO Scoring                      *
  *    TODO Game over                    *
@@ -46,7 +46,6 @@ GameStruct *Init(SDL_Window *window, SDL_Renderer *render)
 
 void Update(GameStruct *gameStruct)
 {
-
   int width, height;
   SDL_GetWindowSize(gameStruct->window, &width, &height);
 
@@ -84,18 +83,18 @@ void Update(GameStruct *gameStruct)
   }
 
   if (keystate[SDL_SCANCODE_UP]){
-    double left_ny = gameStruct->left_y + (SPEED) * gameStruct->deltatime;
+    double left_ny = gameStruct->left.y + (SPEED);
 
-    if (left_ny + BALL_SIZE*6 < gameStruct->h){
-      gameStruct->left.y = (int)lround(gameStruct->left_y);
+    if (left_ny > 0){
+      gameStruct->left.y += (int)lround(gameStruct->left_y);
     }
   }
 
-  if (keystate[SDL_SCANCODE_DOWN] && gameStruct->left.y < gameStruct->h - BALL_SIZE*6){
-    gameStruct->left.y += gameStruct->left_y + SPEED * gameStruct->deltatime;
+  /*if (keystate[SDL_SCANCODE_DOWN] && gameStruct->left.y < gameStruct->h - BALL_SIZE*6){
+    gameStruct->left.y += gameStruct->left.y + SPEED * gameStruct->deltatime;
   }
 
-  /*if (keystate[SDL_SCANCODE_E] && rect_right.y > 0){
+  if (keystate[SDL_SCANCODE_E] && rect_right.y > 0){
     rect_right.y -= SPEED * deltatime;
   }
 
