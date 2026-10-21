@@ -5,3 +5,4 @@ Game
 obj/*
 bestScore.txt
 .gitignore
+move.lua
