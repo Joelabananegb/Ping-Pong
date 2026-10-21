@@ -82,25 +82,26 @@ void Update(GameStruct *gameStruct)
     }
   }
 
-  if (keystate[SDL_SCANCODE_UP]){
-    double left_ny = gameStruct->left.y + (SPEED);
+  if (keystate[SDL_SCANCODE_UP] && gameStruct->left.y > 0){
+    gameStruct->left.y -= (int)(SPEED*1.2 * gameStruct->deltatime);
+    /*double left_ny = gameStruct->left.y + (SPEED);
 
     if (left_ny > 0){
       gameStruct->left.y += (int)lround(gameStruct->left_y);
-    }
+    }*/
   }
 
-  /*if (keystate[SDL_SCANCODE_DOWN] && gameStruct->left.y < gameStruct->h - BALL_SIZE*6){
-    gameStruct->left.y += gameStruct->left.y + SPEED * gameStruct->deltatime;
+  if (keystate[SDL_SCANCODE_DOWN] && gameStruct->left.y < gameStruct->h - BALL_SIZE*6){
+    gameStruct->left.y += (int)(SPEED * 1.2 * gameStruct->deltatime);
   }
 
-  if (keystate[SDL_SCANCODE_E] && rect_right.y > 0){
-    rect_right.y -= SPEED * deltatime;
+  if (keystate[SDL_SCANCODE_E] && gameStruct->right.y > 0){
+    gameStruct->right.y -= (int)(SPEED * 1.2 * gameStruct->deltatime);
   }
 
-  if (keystate[SDL_SCANCODE_D] && rect_right.y < height - BALL_SIZE*3){
-    rect_right.y += SPEED * deltatime;
-  }*/
+  if (keystate[SDL_SCANCODE_D] && gameStruct->right.y < gameStruct->h - BALL_SIZE*6){
+    gameStruct->right.y += (int)(SPEED * 1.2 * gameStruct->deltatime);
+  }
 }
 
 
@@ -123,8 +124,8 @@ void Draw(GameStruct *gameStruct)
 
 void MoveBall(GameStruct *gameStruct)
 {
-    gameStruct->ball_x += gameStruct->dx * SPEED * gameStruct->deltatime;
-    gameStruct->ball_y += gameStruct->dy * SPEED * gameStruct->deltatime;
+    gameStruct->ball_x += gameStruct->dx * SPEED *0.5 * gameStruct->deltatime;
+    gameStruct->ball_y += gameStruct->dy * SPEED *0.5 * gameStruct->deltatime;
 
     if (gameStruct->ball_x < 0){
         gameStruct->ball_x = 0;
