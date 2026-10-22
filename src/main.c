@@ -17,9 +17,13 @@ int main()
   SDL_Renderer *render = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
   if (render==NULL){
     Log(SDL_GetError());
-    return 0;
+    return 1;
   }
 
+  if (TTF_Init() == -1){
+    Log(SDL_GetError());
+    return 1;
+  }
   Game(render,window);
 
   SDL_DestroyRenderer(render);

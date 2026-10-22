@@ -6,8 +6,8 @@ SRC_DIR = src
 OBJ_DIR = obj
 
 # Flags
-CFLAGS = -Wall -Wextra -g -fsanitize=address `sdl2-config --cflags` -lSDL2_image
-LDFLAGS = -lm -lncurses -fsanitize=address `sdl2-config --libs` #-lSDL2_image -lSDL2_ttf
+CFLAGS = -Wall -Wextra -g -fsanitize=address `sdl2-config --cflags` #-lSDL2_image
+LDFLAGS = -lm -lncurses -fsanitize=address `sdl2-config --libs` -lSDL2_ttf #-lSDL2_image 
 #ASAN = ASAN_OPTIONS=detect_leaks=0
 
 # Nom de l'exécutable
