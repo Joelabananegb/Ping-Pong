@@ -8,7 +8,7 @@ OBJ_DIR = obj
 # Flags
 CFLAGS = -Wall -Wextra -g -fsanitize=address `sdl2-config --cflags` -lSDL2_image
 LDFLAGS = -lm -lncurses -fsanitize=address `sdl2-config --libs` #-lSDL2_image -lSDL2_ttf
-ASAN = ASAN_OPTIONS=detect_leaks=0
+#ASAN = ASAN_OPTIONS=detect_leaks=0
 
 # Nom de l'exécutable
 TARGET = Game
@@ -40,4 +40,5 @@ re: clean all
 
 # Lancer le programme
 run: $(TARGET)
-	$(ASAN) ./$(TARGET)
+	#$(ASAN) 
+	./$(TARGET)
