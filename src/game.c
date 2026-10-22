@@ -53,28 +53,31 @@ void Update(GameStruct *gameStruct)
   SDL_Event event;
   while(SDL_PollEvent(&event)){
     if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED){
-      gameStruct->w        = event.window.data1;
-      gameStruct->h        = event.window.data2;
 
-      gameStruct->left.x   = RACKET_PADDING + 10;
-      gameStruct->left.y   = (gameStruct->h/ 2) - BALL_SIZE*2;
-      gameStruct->left.w   = RACKET_PADDING;
-      gameStruct->left.h   = BALL_SIZE*6;
+      gameStruct->w            = event.window.data1;
+      gameStruct->h            = event.window.data2;
 
-      gameStruct->right.x  = gameStruct->w- 30;
-      gameStruct->right.y  = (gameStruct->h/ 2) - BALL_SIZE*2;
-      gameStruct->right.w  = RACKET_PADDING;
-      gameStruct->right.h  = BALL_SIZE*6;
+      gameStruct->left.x       = RACKET_PADDING + 10;
+      gameStruct->left.y       = (gameStruct->h/ 2) - BALL_SIZE*2;
+      gameStruct->left.w       = RACKET_PADDING;
+      gameStruct->left.h       = BALL_SIZE*6;
 
-      gameStruct->ball.x   = (gameStruct->w- BALL_SIZE) / 2;
-      gameStruct->ball.y   = (gameStruct->h- BALL_SIZE) / 2;
-      gameStruct->ball.w   = BALL_SIZE;
-      gameStruct->ball.h   = BALL_SIZE;
+      gameStruct->right.x      = gameStruct->w- 30;
+      gameStruct->right.y      = (gameStruct->h/ 2) - BALL_SIZE*2;
+      gameStruct->right.w      = RACKET_PADDING;
+      gameStruct->right.h      = BALL_SIZE*6;
 
-      gameStruct->dots.x   = (gameStruct->w - 5) / 2;
-      gameStruct->dots.y   = 0;
-      gameStruct->dots.w   = 5;
-      gameStruct->dots.h   = LINE_HEIGHT;
+      gameStruct->ball.x       = (gameStruct->w- BALL_SIZE) / 2;
+      gameStruct->ball.y       = (gameStruct->h- BALL_SIZE) / 2;
+      gameStruct->ball.w       = BALL_SIZE;
+      gameStruct->ball.h       = BALL_SIZE;
+
+      gameStruct->dots.x       = (gameStruct->w - 5) / 2;
+      gameStruct->dots.y       = 0;
+      gameStruct->dots.w       = 5;
+      gameStruct->dots.h       = LINE_HEIGHT;
+      gameStruct->line_length  = ((gameStruct->h / 100)*(gameStruct->h/ 100))+2;
+
     }
 
     if (event.type == SDL_QUIT){
@@ -84,11 +87,6 @@ void Update(GameStruct *gameStruct)
 
   if (keystate[SDL_SCANCODE_UP] && gameStruct->left.y > 0){
     gameStruct->left.y -= (int)(SPEED*1.2 * gameStruct->deltatime);
-    /*double left_ny = gameStruct->left.y + (SPEED);
-
-    if (left_ny > 0){
-      gameStruct->left.y += (int)lround(gameStruct->left_y);
-    }*/
   }
 
   if (keystate[SDL_SCANCODE_DOWN] && gameStruct->left.y < gameStruct->h - BALL_SIZE*6){
