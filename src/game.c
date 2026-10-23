@@ -127,13 +127,13 @@ void MoveBall(GameStruct *gameStruct)
     gameStruct->ball_y += gameStruct->dy * SPEED *0.5 * gameStruct->deltatime;
 
     if (gameStruct->ball_x < 0){
-        gameStruct->ball_x = 0;
+        //gameStruct->ball_x = 0;
         printf("%.2lf\n",gameStruct->ball_x);
-        gameStruct->dx     = -gameStruct->dx;
+        //gameStruct->dx     = -gameStruct->dx;
 
         gameStruct->ball.x       = (gameStruct->w- BALL_SIZE) / 2;
         gameStruct->ball.y       = (gameStruct->h- BALL_SIZE) / 2;
-        gameStruct->left_score++;  
+        gameStruct->left_score++;
     }else if (gameStruct->ball_x > gameStruct->w - gameStruct->ball.w){
         gameStruct->ball_x = gameStruct->w - gameStruct->ball.w;
         gameStruct->dx     = -gameStruct->dx;
