@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.>
+#include <SDL2/SDL_ttf.h>
 #include <stdbool.h>
 #include <stdlib.h>
 
