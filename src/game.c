@@ -162,6 +162,7 @@ void RenderScore(GameStruct *gameStruct){
   SDL_Rect fontRect = {gameStruct->w/2 - 32*4, 50, 0, 0};
   SDL_QueryTexture(fontTexture, NULL, NULL, &fontRect.w, &fontRect.h);
   SDL_RenderCopy(gameStruct->render,fontTexture, NULL, &fontRect);
+  SDL_DestroyTexture(fontTexture);
 }
 
 void Game(SDL_Renderer *render, SDL_Window *window, TTF_Font *font)
