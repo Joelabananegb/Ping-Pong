@@ -40,14 +40,14 @@ typedef struct GameStruct{
   SDL_Rect        dots;
   SDL_Renderer    *render;
   SDL_Window      *window;
-
+  TTF_Font        *font;
 }GameStruct;
 
 void Log(const char *);
-GameStruct*Init(SDL_Window *, SDL_Renderer *);
+GameStruct*Init(SDL_Window *, SDL_Renderer *, TTF_Font *);
 void Update(GameStruct *);
 void Draw(GameStruct *);
 void MoveBall(GameStruct *);
-void Game(SDL_Renderer *, SDL_Window *);
+void Game(SDL_Renderer *, SDL_Window *, TTF_Font *);
 
 #endif // !GAME_H

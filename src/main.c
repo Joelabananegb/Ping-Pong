@@ -24,10 +24,19 @@ int main()
     Log(SDL_GetError());
     return 1;
   }
-  Game(render,window);
 
+  TTF_Font *font = TTF_OpenFont("./fonts/BigBlueTerm437NerdFont-Regular.ttf", 40);
+  if (!font){
+    Log(SDL_GetError());
+    return 1;
+  }
+
+  Game(render,window, font);
+
+  TTF_CloseFont(font);
   SDL_DestroyRenderer(render);
   SDL_DestroyWindow(window);
+  TTF_Quit();
   SDL_Quit();
   return 0;
 }

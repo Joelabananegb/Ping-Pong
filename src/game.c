@@ -17,7 +17,7 @@ void Log(const char *log)
 
 int running = 1;
 
-GameStruct *Init(SDL_Window *window, SDL_Renderer *render)
+GameStruct *Init(SDL_Window *window, SDL_Renderer *render, TTF_Font *font)
 {
   int width, height;
   SDL_GetWindowSize(window, &width, &height);
@@ -33,12 +33,15 @@ GameStruct *Init(SDL_Window *window, SDL_Renderer *render)
   game->ball_x       = 100.0;
   game->ball_y       = 100.0;
   game->left_y       = 0.0;
+  game->left_score   = 0;
+  game->right_score  = 0;
 
   game->dx           = 1;
   game->dy           = -1;
 
   game->window       = window;
   game->render       = render;
+  game->font         = font;
   game->line_length  = ((height / 100)*(height/ 100))+2;
 
   return game;
@@ -77,7 +80,6 @@ void Update(GameStruct *gameStruct)
       gameStruct->dots.w       = 5;
       gameStruct->dots.h       = LINE_HEIGHT;
       gameStruct->line_length  = ((gameStruct->h / 100)*(gameStruct->h/ 100))+2;
-
     }
 
     if (event.type == SDL_QUIT){
@@ -101,7 +103,6 @@ void Update(GameStruct *gameStruct)
     gameStruct->right.y += (int)(SPEED * 1.2 * gameStruct->deltatime);
   }
 }
-
 
 void Draw(GameStruct *gameStruct)
 {
@@ -146,9 +147,26 @@ void MoveBall(GameStruct *gameStruct)
     gameStruct->ball.y = (int)lround(gameStruct->ball_y);
 }
 
-void Game(SDL_Renderer *render, SDL_Window *window)
+void RenderScore(GameStruct *gameStruct){
+  char score[128];
+  char space[10];
+  for (int i = 0; i<8;i++){
+    space[i]=32;
+  }
+  sprintf(score, "%d%s%d", gameStruct->left_score,space,gameStruct->right_score);
+  SDL_Color color = {255,255,255,255};
+  SDL_Surface *fontSurf = TTF_RenderText_Blended(gameStruct->font,score,color);
+  SDL_Texture *fontTexture = SDL_CreateTextureFromSurface(gameStruct->render, fontSurf);
+  SDL_FreeSurface(fontSurf);
+
+  SDL_Rect fontRect = {gameStruct->w/2 - 32*4, 50, 0, 0};
+  SDL_QueryTexture(fontTexture, NULL, NULL, &fontRect.w, &fontRect.h);
+  SDL_RenderCopy(gameStruct->render,fontTexture, NULL, &fontRect);
+}
+
+void Game(SDL_Renderer *render, SDL_Window *window, TTF_Font *font)
 {
-  GameStruct *gameStruct = Init(window, render);
+  GameStruct *gameStruct = Init(window, render, font);
   Uint64 now             = SDL_GetPerformanceCounter();
   Uint64 last            = 0;
 
@@ -160,6 +178,7 @@ void Game(SDL_Renderer *render, SDL_Window *window)
     Update(gameStruct);
     SDL_SetRenderDrawColor(gameStruct->render, 19, 19, 24, 255);
     SDL_RenderClear(gameStruct->render);
+    RenderScore(gameStruct);
     Draw(gameStruct);
     MoveBall(gameStruct);
     SDL_RenderPresent(gameStruct->render);
