@@ -128,10 +128,17 @@ void MoveBall(GameStruct *gameStruct)
 
     if (gameStruct->ball_x < 0){
         gameStruct->ball_x = 0;
+        printf("%.2lf\n",gameStruct->ball_x);
         gameStruct->dx     = -gameStruct->dx;
+
+        gameStruct->ball.x       = (gameStruct->w- BALL_SIZE) / 2;
+        gameStruct->ball.y       = (gameStruct->h- BALL_SIZE) / 2;
+        gameStruct->left_score++;  
     }else if (gameStruct->ball_x > gameStruct->w - gameStruct->ball.w){
         gameStruct->ball_x = gameStruct->w - gameStruct->ball.w;
         gameStruct->dx     = -gameStruct->dx;
+    }else{
+      gameStruct->ball.x = (int)lround(gameStruct->ball_x);
     }
 
     if (gameStruct->ball_y < 0){
@@ -141,10 +148,11 @@ void MoveBall(GameStruct *gameStruct)
     }else if (gameStruct->ball_y > gameStruct->h - gameStruct->ball.h){
         gameStruct->ball_y = gameStruct->h - gameStruct->ball.h;
         gameStruct->dy     = -gameStruct->dy;
+    }else{
+  
+      gameStruct->ball.y = (int)lround(gameStruct->ball_y);
     }
 
-    gameStruct->ball.x = (int)lround(gameStruct->ball_x);
-    gameStruct->ball.y = (int)lround(gameStruct->ball_y);
 }
 
 void RenderScore(GameStruct *gameStruct){
